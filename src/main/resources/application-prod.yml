@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://art_school_db:5432/art_school_db
+    url: jdbc:postgresql://cinema_db:5432/cinema_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

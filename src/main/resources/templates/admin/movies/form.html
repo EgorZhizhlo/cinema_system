@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${movie.id != null} ? 'Редактировать фильм — CinemaSystem' : 'Создать фильм — CinemaSystem'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/admin/css/navbar.css">
+    <link rel="stylesheet" href="/static/admin/css/footer.css">
+</head>
+<body>
+<div th:replace="~{admin/layout/navbar :: navbar}"></div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header" style="background-color: #ffd700; color: #000;">
+                    <h4 class="mb-0">
+                        <i class="bi bi-film me-2"></i>
+                        <span th:text="${movie.id != null ? 'Редактировать фильм' : 'Создать фильм'}"></span>
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="${movie.id != null ? '/admin/movies/' + movie.id + '/edit' : '/admin/movies/create'}" method="post">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-tag me-1"></i>Название
+                            </label>
+                            <input type="text" class="form-control" id="title" name="title" th:value="${movie.title}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-textarea me-1"></i>Описание
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="3" th:text="${movie.description}"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-tags me-1"></i>Жанр
+                            </label>
+                            <input type="text" class="form-control" id="genre" name="genre" th:value="${movie.genre}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-clock me-1"></i>Длительность (мин)
+                            </label>
+                            <input type="number" class="form-control" id="duration" name="duration" th:value="${movie.duration}" required>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-1"></i>Сохранить
+                            </button>
+                            <a href="/admin/movies" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{admin/layout/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

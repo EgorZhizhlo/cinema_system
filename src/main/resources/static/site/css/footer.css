@@ -1,14 +1,16 @@
 .site-footer {
     font-size: 14px;
-    color: #666;
+    color: #ffffff;
+    background-color: #000000;
 }
 
 .site-footer a {
-    color: #6f42c1;
+    color: #ffd700;
 }
 
 .site-footer a:hover {
     text-decoration: underline;
+    color: #ffed4e;
 }
 .fixed-footer {
     position: fixed;

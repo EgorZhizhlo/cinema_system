@@ -1,5 +1,7 @@
 .navbar-brand {
     font-size: 1.4rem;
+    color: #ffd700 !important;
+    font-weight: bold;
 }
 
 .nav-link {
@@ -10,5 +12,10 @@
 }
 
 .nav-link:hover {
-    color: #fff !important;
+    color: #ffd700 !important;
+}
+
+.navbar {
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #444;
 }

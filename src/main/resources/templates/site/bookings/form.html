@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Бронирование сеанса — CinemaSystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/site/css/navbar.css">
+    <link rel="stylesheet" href="/static/site/css/footer.css">
+</head>
+<body>
+<div th:replace="~{site/layout/navbar :: navbar}"></div>
+<section style="padding-top: 10%; padding-bottom: 10%;">
+    <div class="container">
+        <h1 class="mb-4">Бронирование сеанса</h1>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Фильм:</strong> <span th:text="${movieSession != null and movieSession.movie != null ? movieSession.movie.title : 'Неизвестен'}"></span></p>
+                <p><strong>Зал:</strong> <span th:text="${movieSession != null and movieSession.hall != null ? movieSession.hall.name : 'Неизвестен'}"></span></p>
+                <p><strong>Время:</strong> <span th:text="${movieSession != null and movieSession.startTime != null ? #temporals.format(movieSession.startTime, 'dd.MM.yyyy HH:mm') : 'Не указано'}"></span></p>
+            </div>
+        </div>
+        <form th:action="@{/bookings/create/{sessionId}(sessionId=${movieSession.id})}" method="post">
+            <button type="submit" class="btn btn-success mt-3">Подтвердить бронирование</button>
+            <a href="/sessions" class="btn btn-secondary mt-3">Отмена</a>
+        </form>
+    </div>
+</section>
+<div th:replace="~{site/layout/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

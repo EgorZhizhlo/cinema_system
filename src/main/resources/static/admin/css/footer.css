@@ -1,7 +1,8 @@
 .admin-footer {
     font-size: 14px;
     border-top: 1px solid #333;
-    color: #bbb;
+    color: #ffffff;
+    background-color: #000000;
 }
 
 .fixed-footer {

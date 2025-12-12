@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сеансы — CinemaSystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/admin/css/navbar.css">
+    <link rel="stylesheet" href="/static/admin/css/footer.css">
+</head>
+<body>
+<div th:replace="~{admin/layout/navbar :: navbar}"></div>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Управление сеансами</h2>
+        <a href="/admin/sessions/create" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i>Создать сеанс
+        </a>
+    </div>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Фильм</th>
+                            <th>Зал</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Менеджер</th>
+                            <th class="text-end">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sess : ${sessions}">
+                            <td th:text="${sess.id}"></td>
+                            <td>
+                                <strong th:text="${sess.movie.title}"></strong>
+                            </td>
+                            <td th:text="${sess.hall.name}"></td>
+                            <td th:text="${#temporals.format(sess.startTime, 'dd.MM.yyyy HH:mm')}"></td>
+                            <td th:text="${#temporals.format(sess.endTime, 'dd.MM.yyyy HH:mm')}"></td>
+                            <td th:text="${sess.manager.fullName}"></td>
+                            <td class="text-end">
+                                <a th:href="@{/admin/sessions/{id}/edit(id=${sess.id})}" class="btn btn-sm btn-warning me-1">Редактировать</a>
+                                <form th:action="@{/admin/sessions/{id}/delete(id=${sess.id})}" method="post" style="display: inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Удалить?')">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{admin/layout/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<div th:replace="~{admin/layout/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

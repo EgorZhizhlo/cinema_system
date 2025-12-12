@@ -5,7 +5,7 @@
 
     <div class="container">
 
-        <a class="navbar-brand fw-bold" href="/">ArtSchoolSystem</a>
+        <a class="navbar-brand fw-bold" href="/">🎥 CinemaSystem</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -16,12 +16,13 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
                 <li class="nav-item"><a class="nav-link" href="/news">Новости</a></li>
-                <li class="nav-item"><a class="nav-link" href="/applications/create">Подать заявку</a></li>
+                <li class="nav-item"><a class="nav-link" href="/sessions">Сеансы</a></li>
+                <li class="nav-item"><a class="nav-link" href="/movies">Фильмы</a></li>
                 <li class="nav-item"><a class="nav-link" href="/about">Об авторе</a></li>
                 
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" href="/enrollments">
-                        <i class="bi bi-calendar-check me-1"></i>Мои записи
+                    <a class="nav-link" href="/bookings">
+                        <i class="bi bi-calendar-check me-1"></i>Мои бронирования
                     </a>
                 </li>
 

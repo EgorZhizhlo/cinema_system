@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${sess.id != null} ? 'Редактировать сеанс — CinemaSystem' : 'Создать сеанс — CinemaSystem'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/admin/css/navbar.css">
+    <link rel="stylesheet" href="/static/admin/css/footer.css">
+</head>
+<body>
+<div th:replace="~{admin/layout/navbar :: navbar}"></div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header" style="background-color: #ffd700; color: #000;">
+                    <h4 class="mb-0">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        <span th:text="${sess.id != null ? 'Редактировать сеанс' : 'Создать сеанс'}"></span>
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="${sess.id != null ? '/admin/sessions/' + sess.id + '/edit' : '/admin/sessions/create'}" method="post">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-film me-1"></i>Фильм
+                            </label>
+                            <select class="form-control" id="movie" name="movie.id" required>
+                                <option th:each="movie : ${movies}" th:value="${movie.id}" th:text="${movie.title}" th:selected="${sess.movie != null and sess.movie.id == movie.id}"></option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-house-door me-1"></i>Зал
+                            </label>
+                            <select class="form-control" id="hall" name="hall.id" required>
+                                <option th:each="hall : ${halls}" th:value="${hall.id}" th:text="${hall.name}" th:selected="${sess.hall != null and sess.hall.id == hall.id}"></option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-clock me-1"></i>Время начала
+                            </label>
+                            <input type="datetime-local" class="form-control" id="startTime" name="startTime" th:value="${sess.startTime != null} ? ${#temporals.format(sess.startTime, 'yyyy-MM-dd''T''HH:mm')} : ''" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-clock-history me-1"></i>Время окончания
+                            </label>
+                            <input type="datetime-local" class="form-control" id="endTime" name="endTime" th:value="${sess.endTime != null} ? ${#temporals.format(sess.endTime, 'yyyy-MM-dd''T''HH:mm')} : ''" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-person me-1"></i>Менеджер
+                            </label>
+                            <select class="form-control" id="manager" name="manager.id" required>
+                                <option th:each="manager : ${managers}" th:value="${manager.id}" th:text="${manager.fullName}" th:selected="${sess.manager != null and sess.manager.id == manager.id}"></option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-1"></i>Сохранить
+                            </button>
+                            <a href="/admin/sessions" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{admin/layout/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

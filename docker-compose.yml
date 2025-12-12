@@ -1,9 +1,9 @@
 services:
   db:
     image: postgres:16
-    container_name: art_school_db
+    container_name: cinema_db
     environment:
-      POSTGRES_DB: art_school_db
+      POSTGRES_DB: cinema_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
@@ -17,12 +17,12 @@ services:
 
   app:
     build: .
-    container_name: art_school_app
+    container_name: cinema_app
     restart: on-failure
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/art_school_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/cinema_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
@@ -34,7 +34,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: art_school_nginx
+    container_name: cinema_nginx
     restart: always
     depends_on:
       - app
