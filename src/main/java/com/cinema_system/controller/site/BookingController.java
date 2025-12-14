@@ -85,11 +85,16 @@ public class BookingController {
     @PostMapping("/{id}/cancel")
     public String cancelBooking(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails, RedirectAttributes redirectAttributes) {
         User user = customUserDetails.getUser();
+        System.out.println("Cancelling booking ID: " + id + " for user: " + user.getEmail());
         Booking booking = bookingService.getBookingById(id);
         if (booking != null && booking.getUser().getId().equals(user.getId())) {
             booking.setStatus(BookingStatus.CANCELLED);
-            bookingService.saveBooking(booking);
+            Booking saved = bookingService.saveBooking(booking);
+            System.out.println("Booking cancelled: ID=" + saved.getId() + ", Status=" + saved.getStatus());
             redirectAttributes.addFlashAttribute("message", "Бронирование отменено");
+        } else {
+            System.out.println("Booking not found or not owned by user");
+            redirectAttributes.addFlashAttribute("error", "Бронирование не найдено");
         }
         return "redirect:/bookings";
     }
