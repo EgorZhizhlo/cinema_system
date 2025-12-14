@@ -37,8 +37,8 @@
                     <td th:text="${#temporals.format(booking.session.startTime, 'dd.MM.yyyy HH:mm')}"></td>
                     <td th:text="${#temporals.format(booking.bookingDate, 'dd.MM.yyyy HH:mm')}"></td>
                     <td>
-                        <span th:class="${booking.status.name() == 'PENDING'} ? 'badge bg-warning' : ${booking.status.name() == 'CONFIRMED'} ? 'badge bg-success' : 'badge bg-danger'"
-                              th:text="${booking.status.name() == 'PENDING'} ? 'Ожидает' : ${booking.status.name() == 'CONFIRMED'} ? 'Подтверждено' : 'Отменено'"></span>
+                        <span class="badge"
+                              th:text="${booking.status}"></span>
                     </td>
                     <td>
                         <form th:action="@{/bookings/{id}/cancel(id=${booking.id})}" method="post" style="display: inline;">
