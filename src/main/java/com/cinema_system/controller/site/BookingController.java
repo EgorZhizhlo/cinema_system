@@ -64,13 +64,6 @@ public class BookingController {
             redirectAttributes.addFlashAttribute("error", "Необходимо войти в систему");
             return "redirect:/login";
         }
-        // Check if booking already exists
-        boolean alreadyBooked = bookingService.getAllBookings().stream()
-                .anyMatch(b -> b.getUser().getId().equals(user.getId()) && b.getSession().getId().equals(sessionId));
-        if (alreadyBooked) {
-            redirectAttributes.addFlashAttribute("error", "Вы уже забронировали этот сеанс");
-            return "redirect:/sessions";
-        }
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setSession(session);
@@ -85,12 +78,11 @@ public class BookingController {
     @PostMapping("/{id}/cancel")
     public String cancelBooking(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails, RedirectAttributes redirectAttributes) {
         User user = customUserDetails.getUser();
-        System.out.println("Cancelling booking ID: " + id + " for user: " + user.getEmail());
+        System.out.println("Deleting booking ID: " + id + " for user: " + user.getEmail());
         Booking booking = bookingService.getBookingById(id);
         if (booking != null && booking.getUser().getId().equals(user.getId())) {
-            booking.setStatus(BookingStatus.CANCELLED);
-            Booking saved = bookingService.saveBooking(booking);
-            System.out.println("Booking cancelled: ID=" + saved.getId() + ", Status=" + saved.getStatus());
+            bookingService.deleteBooking(id);
+            System.out.println("Booking deleted: ID=" + id);
             redirectAttributes.addFlashAttribute("message", "Бронирование отменено");
         } else {
             System.out.println("Booking not found or not owned by user");
