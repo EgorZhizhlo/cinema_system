@@ -22,6 +22,11 @@ public class AuthController {
         return "site/auth/login";
     }
 
+    @GetMapping("/auth/login")
+    public String authLogin() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/registration")
     public String registrationForm(Model model) {
         model.addAttribute("userForm", new User());

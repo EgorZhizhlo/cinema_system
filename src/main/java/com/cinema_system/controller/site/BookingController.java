@@ -3,9 +3,7 @@ package com.cinema_system.controller.site;
 import com.cinema_system.model.Booking;
 import com.cinema_system.model.BookingStatus;
 import com.cinema_system.model.Session;
-import com.cinema_system.model.User;
-import com.cinema_system.service.BookingService;
-import com.cinema_system.service.SessionService;
+import com.cinema_system.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,7 +22,8 @@ public class BookingController {
     private final SessionService sessionService;
 
     @GetMapping
-    public String listUserBookings(@AuthenticationPrincipal User user, Model model) {
+    public String listUserBookings(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
+        User user = customUserDetails.getUser();
         List<Booking> bookings = bookingService.getAllBookings().stream()
                 .filter(b -> b.getUser().getId().equals(user.getId()))
                 .toList();
@@ -50,7 +49,9 @@ public class BookingController {
     }
 
     @PostMapping("/create/{sessionId}")
-    public String createBooking(@PathVariable Long sessionId, @AuthenticationPrincipal User user, RedirectAttributes redirectAttributes) {
+    public String createBooking(@PathVariable Long sessionId, @AuthenticationPrincipal CustomUserDetails customUserDetails, RedirectAttributes redirectAttributes) {
+        User user = customUserDetails.getUser();
+        System.out.println("Creating booking for user: " + user.getEmail() + ", ID: " + user.getId());
         Session session = sessionService.getSessionById(sessionId);
         if (session == null) {
             redirectAttributes.addFlashAttribute("error", "Сеанс не найден");
@@ -58,20 +59,29 @@ public class BookingController {
         }
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Необходимо войти в систему");
-            return "redirect:/auth/login";
+            return "redirect:/login";
+        }
+        // Check if booking already exists
+        boolean alreadyBooked = bookingService.getAllBookings().stream()
+                .anyMatch(b -> b.getUser().getId().equals(user.getId()) && b.getSession().getId().equals(sessionId));
+        if (alreadyBooked) {
+            redirectAttributes.addFlashAttribute("error", "Вы уже забронировали этот сеанс");
+            return "redirect:/sessions";
         }
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setSession(session);
         booking.setBookingDate(LocalDateTime.now());
         booking.setStatus(BookingStatus.PENDING);
-        bookingService.saveBooking(booking);
+        Booking savedBooking = bookingService.saveBooking(booking);
+        System.out.println("Booking created: ID=" + savedBooking.getId() + ", User=" + user.getEmail() + ", Session=" + session.getId());
         redirectAttributes.addFlashAttribute("message", "Бронирование создано успешно!");
         return "redirect:/bookings";
     }
 
     @PostMapping("/{id}/cancel")
-    public String cancelBooking(@PathVariable Long id, @AuthenticationPrincipal User user, RedirectAttributes redirectAttributes) {
+    public String cancelBooking(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails, RedirectAttributes redirectAttributes) {
+        User user = customUserDetails.getUser();
         Booking booking = bookingService.getBookingById(id);
         if (booking != null && booking.getUser().getId().equals(user.getId())) {
             booking.setStatus(BookingStatus.CANCELLED);
