@@ -38,8 +38,8 @@
                             <td th:text="${booking.session.movie.title} + ' (' + ${#temporals.format(booking.session.startTime, 'dd.MM HH:mm')} + ')'"></td>
                             <td th:text="${#temporals.format(booking.bookingDate, 'dd.MM.yyyy HH:mm')}"></td>
                             <td>
-                                <span th:class="${booking.status.name() == 'PENDING'} ? 'badge bg-warning' : ${booking.status.name() == 'CONFIRMED'} ? 'badge bg-success' : 'badge bg-danger'"
-                                      th:text="${booking.status.name() == 'PENDING'} ? 'Ожидает' : ${booking.status.name() == 'CONFIRMED'} ? 'Подтверждено' : 'Отменено'"></span>
+                                <span class="badge text-dark"
+                                      th:text="${booking.status}"></span>
                             </td>
                             <td class="text-end">
                                 <a th:href="@{/admin/bookings/{id}(id=${booking.id})}" class="btn btn-sm btn-primary me-1">Просмотр</a>
